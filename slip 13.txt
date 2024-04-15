@@ -1,0 +1,81 @@
+Q1)
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.DatabaseMetaData;
+public class GetAllTables
+{
+public static void main(String[] args) throws SQLException
+{
+ Connection conn = null;
+ try {
+ try {
+ Class.forName("com.mysql.jdbc.Driver");
+ } catch (Exception e) {
+ System.out.println(e);
+ }
+ conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/test",
+"Manish", "123456");
+ System.out.println("Connection is created succcessfully:");
+ } catch (Exception e) {
+ System.out.println(e);
+ }
+ ResultSet rs = null;
+ DatabaseMetaData meta = (DatabaseMetaData) conn.getMetaData();
+ rs = meta.getTables(null, null, null, new String[] {
+ "TABLE"
+ });
+ int count = 0;
+ System.out.println("All table names are in test database:");
+ while (rs.next()) {
+ String tblName = rs.getString("TABLE_NAME");
+ System.out.println(tblName);
+ count++;
+ }
+ System.out.println(count + " Rows in set ");
+ }
+}
+
+Q2)
+Class MyThread extends Thread
+{
+public MyThread(String s)
+{
+super(s);
+}
+public void run()
+{
+System.out.println(getName()+"thread created.");
+while(true)
+{
+System.out.println(this);
+int s=(int)(math.random()*5000);
+System.out.println(getName()+"is sleeping for :+s+"msec");
+try{
+Thread.sleep(s);
+}
+catch(Exception e)
+{
+}
+}
+}
+Class ThreadLifeCycle
+{
+public static void main(String args[])
+{
+MyThread t1=new MyThread("shradha"),t2=new MyThread("pooja");
+t1.start();
+t2.start();
+try
+{
+t1.join();
+t2.join();
+}
+catch(Exception e)
+{
+}
+System.out.println(t1.getName()+"thread dead.");
+System.out.println(t2.getName()+"thread dead.");
+}
+}

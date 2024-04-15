@@ -1,0 +1,82 @@
+Q1)
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class DeleteEmployeeDetails {
+    // JDBC URL, username, and password of MySQL server
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/your_database_name";
+    private static final String USERNAME = "your_username";
+    private static final String PASSWORD = "your_password";
+
+    public static void main(String[] args) {
+        if (args.length != 1) {
+            System.err.println("Usage: java DeleteEmployeeDetails <employee_id>");
+            System.exit(1);
+        }
+
+        int employeeId = Integer.parseInt(args[0]);
+
+        try (Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD)) {
+            // SQL query to delete employee details
+            String sql = "DELETE FROM employee WHERE ENo = ?";
+
+            // Create a PreparedStatement with the SQL query
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, employeeId);
+
+            // Execute the query
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Employee details deleted successfully.");
+            } else {
+                System.out.println("Employee with ID " + employeeId + " not found.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error connecting to the database or executing the query: " + e.getMessage());
+        }
+    }
+}
+
+
+Q2)
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Sum of First and Last Digit</title>
+</head>
+<body>
+    <h2>Sum of First and Last Digit</h2>
+    
+    <%!
+        int sumOfFirstAndLastDigit(int number) {
+            // Convert the number to a string
+            String numStr = String.valueOf(number);
+            
+            // Get the first and last digits
+            int firstDigit = Character.getNumericValue(numStr.charAt(0));
+            int lastDigit = Character.getNumericValue(numStr.charAt(numStr.length() - 1));
+            
+            // Calculate the sum
+            int sum = firstDigit + lastDigit;
+            
+            return sum;
+        }
+    %>
+    
+    <% 
+        // Get the number from request parameter
+        int number = Integer.parseInt(request.getParameter("number"));
+        
+        // Calculate the sum of first and last digit
+        int sum = sumOfFirstAndLastDigit(number);
+    %>
+    
+    <p style="font-size: 18px; color: red;">Sum of first and last digit of <%= number %> is <%= sum %></p>
+</body>
+</html>

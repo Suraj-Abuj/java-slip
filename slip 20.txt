@@ -1,0 +1,106 @@
+Q1)
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Number to Words Converter</title>
+</head>
+<body>
+    <h2>Number to Words Converter</h2>
+    <%@ page import="java.util.Map" %>
+    <%@ page import="java.util.HashMap" %>
+    <%@ page import="java.util.Arrays" %>
+
+    <%
+        // Mapping of digits to words
+        Map<Character, String> digitMap = new HashMap<>();
+        digitMap.put('0', "Zero");
+        digitMap.put('1', "One");
+        digitMap.put('2', "Two");
+        digitMap.put('3', "Three");
+        digitMap.put('4', "Four");
+        digitMap.put('5', "Five");
+        digitMap.put('6', "Six");
+        digitMap.put('7', "Seven");
+        digitMap.put('8', "Eight");
+        digitMap.put('9', "Nine");
+
+        // Retrieve number from request parameter
+        String numberStr = request.getParameter("number");
+        char[] digits = numberStr.toCharArray();
+
+        // Convert each digit to words
+        StringBuilder result = new StringBuilder();
+        for (char digit : digits) {
+            result.append("<span style=\"color: red;\">").append(digitMap.get(digit)).append("</span> ");
+        }
+    %>
+
+    <p>Number in words: <%= result.toString() %></p>
+</body>
+</html>
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Number to Words Converter</title>
+</head>
+<body>
+    <h2>Number to Words Converter</h2>
+    <form action="ConvertNumber.jsp" method="post">
+        Enter a number: <input type="text" name="number">
+        <input type="submit" value="Convert">
+    </form>
+</body>
+</html>
+
+Q2)
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class BlinkingImage extends JFrame {
+    private ImageIcon imageIcon;
+    private JLabel imageLabel;
+
+    public BlinkingImage() {
+        setTitle("Blinking Image");
+        setSize(300, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Load your image (replace "image.png" with the path to your image file)
+        imageIcon = new ImageIcon("image.png");
+        imageLabel = new JLabel(imageIcon);
+
+        // Add the image label to the content pane
+        getContentPane().add(imageLabel, BorderLayout.CENTER);
+
+        // Create a Timer to toggle the image visibility every 500 milliseconds (half a second)
+        Timer timer = new Timer(500, new ActionListener() {
+            boolean visible = true;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                visible = !visible;
+                imageLabel.setVisible(visible);
+            }
+        });
+
+        // Start the timer
+        timer.start();
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                BlinkingImage blinkingImage = new BlinkingImage();
+                blinkingImage.setVisible(true);
+            }
+        });
+    }
+}

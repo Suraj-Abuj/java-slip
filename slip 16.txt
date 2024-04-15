@@ -1,0 +1,80 @@
+Q1)
+import java.util.TreeSet;
+
+public class TreeSetExample {
+    public static void main(String[] args) {
+        // Create a TreeSet to store colors
+        TreeSet<String> colors = new TreeSet<>();
+
+        // Add some colors to the TreeSet
+        colors.add("Red");
+        colors.add("Green");
+        colors.add("Blue");
+        colors.add("Yellow");
+        colors.add("Orange");
+
+        // Print the content of the TreeSet in ascending order
+        System.out.println("Colors in ascending order:");
+        for (String color : colors) {
+            System.out.println(color);
+        }
+    }
+}
+
+Q2)
+import java.sql.*;
+
+public class TeacherDetails {
+    public static void main(String[] args) {
+        try {
+            // Establishing a connection to the database
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/your_database_name", "username", "password");
+
+            // Creating a PreparedStatement
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Teacher (TNo, TName, Subject) VALUES (?, ?, ?)");
+
+            // Inserting 5 records into the Teacher table
+            insertTeacher(preparedStatement, 101, "John Doe", "JAVA");
+            insertTeacher(preparedStatement, 102, "Jane Smith", "C++");
+            insertTeacher(preparedStatement, 103, "Michael Johnson", "JAVA");
+            insertTeacher(preparedStatement, 104, "Emily Brown", "Python");
+            insertTeacher(preparedStatement, 105, "David Lee", "JAVA");
+
+            // Displaying details of teachers teaching "JAVA" subject
+            displayJavaTeachers(connection);
+
+            // Closing the PreparedStatement and Connection
+            preparedStatement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Method to insert a teacher record into the Teacher table
+    private static void insertTeacher(PreparedStatement preparedStatement, int tNo, String tName, String subject) throws SQLException {
+        preparedStatement.setInt(1, tNo);
+        preparedStatement.setString(2, tName);
+        preparedStatement.setString(3, subject);
+        preparedStatement.executeUpdate();
+    }
+
+    // Method to display details of teachers teaching "JAVA" subject
+    private static void displayJavaTeachers(Connection connection) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Teacher WHERE Subject = ?");
+        preparedStatement.setString(1, "JAVA");
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        System.out.println("Details of teachers teaching \"JAVA\" subject:");
+        System.out.println("TNo\tTName\tSubject");
+        while (resultSet.next()) {
+            int tNo = resultSet.getInt("TNo");
+            String tName = resultSet.getString("TName");
+            String subject = resultSet.getString("Subject");
+            System.out.println(tNo + "\t" + tName + "\t" + subject);
+        }
+
+        resultSet.close();
+        preparedStatement.close();
+    }
+}

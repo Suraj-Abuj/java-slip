@@ -1,0 +1,126 @@
+Q1)
+class Counter {
+    private int count = 0;
+
+    // Synchronized method to increment the counter
+    public synchronized void increment() {
+        count++;
+    }
+
+    // Synchronized method to decrement the counter
+    public synchronized void decrement() {
+        count--;
+    }
+
+    // Method to get the current value of the counter
+    public synchronized int getCount() {
+        return count;
+    }
+}
+
+class MyThread extends Thread {
+    private Counter counter;
+
+    public MyThread(Counter counter) {
+        this.counter = counter;
+    }
+
+    @Override
+    public void run() {
+        // Increment the counter
+        counter.increment();
+        System.out.println("Thread " + Thread.currentThread().getName() + " incremented the counter. Current value: " + counter.getCount());
+
+        // Decrement the counter
+        counter.decrement();
+        System.out.println("Thread " + Thread.currentThread().getName() + " decremented the counter. Current value: " + counter.getCount());
+    }
+}
+
+public class SynchronizationExample {
+    public static void main(String[] args) {
+        // Create a shared Counter object
+        Counter counter = new Counter();
+
+        // Create multiple threads that operate on the shared counter
+        Thread thread1 = new MyThread(counter);
+        Thread thread2 = new MyThread(counter);
+        Thread thread3 = new MyThread(counter);
+
+        // Start the threads
+        thread1.start();
+        thread2.start();
+        thread3.start();
+    }
+}
+
+Q2)
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class ScrollableResultSetExample {
+    // JDBC URL, username, and password of your database
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/your_database_name";
+    private static final String USERNAME = "your_username";
+    private static final String PASSWORD = "your_password";
+
+    public static void main(String[] args) {
+        try (Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD)) {
+            // Create a Statement with a scrollable ResultSet
+            Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            
+            // Execute the query to select all records from the Teacher table
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM Teacher");
+            
+            // Move the cursor to the first row
+            resultSet.first();
+            
+            // Print the header
+            System.out.println("TID\tTName\tSalary");
+            
+            // Loop through the result set and print each row
+            while (resultSet.next()) {
+                int tid = resultSet.getInt("TID");
+                String tname = resultSet.getString("TName");
+                double salary = resultSet.getDouble("Salary");
+                
+                System.out.println(tid + "\t" + tname + "\t" + salary);
+            }
+            
+            // Move the cursor to the last row
+            resultSet.last();
+            
+            // Print the total number of rows
+            System.out.println("Total number of rows: " + resultSet.getRow());
+            
+            // Move the cursor to the first row again
+            resultSet.first();
+            
+            // Print the first row again
+            System.out.println("First row: " + resultSet.getInt("TID") + "\t" + resultSet.getString("TName") + "\t" + resultSet.getDouble("Salary"));
+            
+            // Move the cursor to the previous row
+            resultSet.previous();
+            
+            // Print the previous row
+            System.out.println("Previous row: " + resultSet.getInt("TID") + "\t" + resultSet.getString("TName") + "\t" + resultSet.getDouble("Salary"));
+            
+            // Move the cursor to the next row
+            resultSet.next();
+            
+            // Print the next row
+            System.out.println("Next row: " + resultSet.getInt("TID") + "\t" + resultSet.getString("TName") + "\t" + resultSet.getDouble("Salary"));
+            
+            // Move the cursor to the absolute position (3rd row)
+            resultSet.absolute(3);
+            
+            // Print the row at the absolute position
+            System.out.println("Row at absolute position 3: " + resultSet.getInt("TID") + "\t" + resultSet.getString("TName") + "\t" + resultSet.getDouble("Salary"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}

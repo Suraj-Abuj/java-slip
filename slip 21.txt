@@ -1,0 +1,131 @@
+Q1)
+import java.util.LinkedList;
+import java.util.Iterator;
+import java.util.Scanner;
+
+public class SubjectNames {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Accept the value of 'N' from the user
+        System.out.print("Enter the value of N: ");
+        int N = scanner.nextInt();
+
+        // Create a LinkedList to store the subject names
+        LinkedList<String> subjects = new LinkedList<>();
+
+        // Accept 'N' subject names from the user and store them in the LinkedList
+        System.out.println("Enter " + N + " subject names:");
+        for (int i = 0; i < N; i++) {
+            String subject = scanner.next();
+            subjects.add(subject);
+        }
+
+        // Display the subject names using Iterator interface
+        System.out.println("Subject names:");
+        Iterator<String> iterator = subjects.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+
+        scanner.close();
+    }
+}
+
+Q2)
+import java.util.LinkedList;
+
+public class ProducerConsumer {
+    public static void main(String[] args) {
+        // Create shared object between producer and consumer
+        Buffer buffer = new Buffer(5); // Buffer size is 5
+
+        // Create producer and consumer threads
+        Thread producerThread = new Thread(new Producer(buffer));
+        Thread consumerThread = new Thread(new Consumer(buffer));
+
+        // Start producer and consumer threads
+        producerThread.start();
+        consumerThread.start();
+    }
+}
+
+// Buffer class to store values
+class Buffer {
+    private LinkedList<Integer> buffer;
+    private int maxSize;
+
+    public Buffer(int maxSize) {
+        this.maxSize = maxSize;
+        buffer = new LinkedList<>();
+    }
+
+    // Producer method to add a value to the buffer
+    public synchronized void produce(int value) throws InterruptedException {
+        // If buffer is full, wait for consumer to consume some values
+        while (buffer.size() == maxSize) {
+            wait();
+        }
+        // Add value to buffer
+        buffer.add(value);
+        System.out.println("Produced: " + value);
+        // Notify consumer that value is produced
+        notify();
+    }
+
+    // Consumer method to consume a value from the buffer
+    public synchronized int consume() throws InterruptedException {
+        // If buffer is empty, wait for producer to produce some values
+        while (buffer.size() == 0) {
+            wait();
+        }
+        // Consume value from buffer
+        int value = buffer.removeFirst();
+        System.out.println("Consumed: " + value);
+        // Notify producer that value is consumed
+        notify();
+        return value;
+    }
+}
+
+// Producer class
+class Producer implements Runnable {
+    private Buffer buffer;
+
+    public Producer(Buffer buffer) {
+        this.buffer = buffer;
+    }
+
+    @Override
+    public void run() {
+        try {
+            for (int i = 0; i < 10; i++) { // Produce 10 values
+                buffer.produce(i);
+                Thread.sleep(1000); // Simulate some time taken to produce a value
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+// Consumer class
+class Consumer implements Runnable {
+    private Buffer buffer;
+
+    public Consumer(Buffer buffer) {
+        this.buffer = buffer;
+    }
+
+    @Override
+    public void run() {
+        try {
+            for (int i = 0; i < 10; i++) { // Consume 10 values
+                int value = buffer.consume();
+                Thread.sleep(1000); // Simulate some time taken to consume a value
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}

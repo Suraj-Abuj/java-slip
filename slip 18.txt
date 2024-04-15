@@ -1,0 +1,97 @@
+Q1)
+public class ThreadInfoExample {
+    public static void main(String[] args) {
+        // Create a new thread
+        Thread thread = new Thread();
+
+        // Set name for the thread
+        thread.setName("MyThread");
+
+        // Set priority for the thread
+        thread.setPriority(Thread.MAX_PRIORITY); // You can set any priority from MIN_PRIORITY (1) to MAX_PRIORITY (10)
+
+        // Display name and priority of the thread
+        System.out.println("Thread Name: " + thread.getName());
+        System.out.println("Thread Priority: " + thread.getPriority());
+    }
+}
+
+Q2)
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/StudentDetailsServlet")
+public class StudentDetailsServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Get parameters from the request
+        int seatNo = Integer.parseInt(request.getParameter("seatNo"));
+        String studName = request.getParameter("studName");
+        String studClass = request.getParameter("studClass");
+        int totalMarks = Integer.parseInt(request.getParameter("totalMarks"));
+
+        // Calculate percentage
+        double percentage = (totalMarks / 500.0) * 100;
+
+        // Calculate grade
+        String grade;
+        if (percentage >= 90) {
+            grade = "A+";
+        } else if (percentage >= 80) {
+            grade = "A";
+        } else if (percentage >= 70) {
+            grade = "B";
+        } else if (percentage >= 60) {
+            grade = "C";
+        } else if (percentage >= 50) {
+            grade = "D";
+        } else {
+            grade = "Fail";
+        }
+
+        // Set response content type
+        response.setContentType("text/html");
+
+        // Create PrintWriter object
+        PrintWriter out = response.getWriter();
+
+        // Output student details and result
+        out.println("<html><head><title>Student Result</title></head><body>");
+        out.println("<h2>Student Details</h2>");
+        out.println("<p>Seat No: " + seatNo + "</p>");
+        out.println("<p>Name: " + studName + "</p>");
+        out.println("<p>Class: " + studClass + "</p>");
+        out.println("<p>Total Marks: " + totalMarks + "</p>");
+        out.println("<h2>Result</h2>");
+        out.println("<p>Percentage: " + percentage + "%</p>");
+        out.println("<p>Grade: " + grade + "</p>");
+        out.println("</body></html>");
+
+        // Close PrintWriter
+        out.close();
+    }
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Details Form</title>
+</head>
+<body>
+    <h2>Enter Student Details</h2>
+    <form action="StudentDetailsServlet" method="post">
+        Seat No: <input type="text" name="seatNo"><br>
+        Name: <input type="text" name="studName"><br>
+        Class: <input type="text" name="studClass"><br>
+        Total Marks: <input type="text" name="totalMarks"><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
+

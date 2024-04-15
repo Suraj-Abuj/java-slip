@@ -1,0 +1,100 @@
+Q1)
+import java.util.Scanner;
+
+public class EmployeeManagement {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        boolean exit = false;
+
+        while (!exit) {
+            System.out.println("Menu:");
+            System.out.println("1. Insert");
+            System.out.println("2. Update");
+            System.out.println("3. Display");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice: ");
+
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    insertEmployee();
+                    break;
+                case 2:
+                    updateEmployee();
+                    break;
+                case 3:
+                    displayEmployees();
+                    break;
+                case 4:
+                    exit = true;
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please enter a valid option.");
+            }
+        }
+        scanner.close();
+    }
+
+    private static void insertEmployee() {
+        // Implement logic to insert employee into the database
+        System.out.println("Inserting employee...");
+    }
+
+    private static void updateEmployee() {
+        // Implement logic to update employee in the database
+        System.out.println("Updating employee...");
+    }
+
+    private static void displayEmployees() {
+        // Implement logic to display employees from the database
+        System.out.println("Displaying employees...");
+    }
+}
+
+Q2)
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Greeting</title>
+</head>
+<body>
+    <h2>Welcome, <jsp:useBean id="user" class="User" scope="request"/>
+        <jsp:setProperty name="user" property="username"/>
+        <%= user.getUsername() %>!</h2>
+    <%
+        int hour = new java.util.Date().getHours(); // Get the current hour of the day
+        String greeting;
+        if (hour < 12) {
+            greeting = "Good morning";
+        } else if (hour < 18) {
+            greeting = "Good afternoon";
+        } else {
+            greeting = "Good evening";
+        }
+    %>
+    <p><%= greeting %>, <%= user.getUsername() %>.</p>
+    <form action="Greeting.jsp" method="post">
+        Enter your name: <input type="text" name="username">
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Greeting Page</title>
+</head>
+<body>
+    <h2>Greeting Page</h2>
+    <form action="GreetUser.jsp" method="post">
+        Enter your name: <input type="text" name="username">
+        <input type="submit" value="Greet">
+    </form>
+</body>
+</html>

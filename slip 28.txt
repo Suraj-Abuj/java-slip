@@ -1,0 +1,52 @@
+Q1)
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Reverse String</title>
+</head>
+<body>
+    <h2>Reverse String</h2>
+    
+    <form method="post" action="reverseString.jsp">
+        <label for="inputString">Enter a String:</label>
+        <input type="text" id="inputString" name="inputString" required>
+        <input type="submit" value="Reverse">
+    </form>
+    
+    <%-- Check if the form is submitted --%>
+    <%
+        if (request.getMethod().equals("POST")) {
+            // Retrieve the input string from the request parameter
+            String inputString = request.getParameter("inputString");
+            
+            // Reverse the input string
+            StringBuilder reversedString = new StringBuilder(inputString).reverse();
+    %>
+            <p>Reversed String: <%= reversedString %></p>
+    <%-- End of if block --%>
+    <% } %>
+</body>
+</html>
+
+Q2)
+public class CurrentThreadNameDemo {
+    public static void main(String[] args) {
+        // Create and start a thread
+        Thread thread1 = new Thread(new MyRunnable());
+        thread1.start();
+        
+        // Display the name of the main thread
+        System.out.println("Main thread name: " + Thread.currentThread().getName());
+    }
+
+    static class MyRunnable implements Runnable {
+        @Override
+        public void run() {
+            // Display the name of the currently executing thread
+            System.out.println("Currently executing thread name: " + Thread.currentThread().getName());
+        }
+    }
+}

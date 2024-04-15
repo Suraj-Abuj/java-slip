@@ -1,0 +1,74 @@
+Q1)
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+
+public class CollegeDetailsJTable extends JFrame {
+    private JTable table;
+    private DefaultTableModel model;
+
+    public CollegeDetailsJTable() {
+        setTitle("College Details");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(600, 400);
+
+        // Sample data of college details (CID, CName, Address, Year)
+        Object[][] data = {
+                {1, "ABC College", "123 Main St", 2000},
+                {2, "XYZ College", "456 Broadway", 1995},
+                {3, "DEF College", "789 Elm St", 2010}
+        };
+
+        // Column names
+        String[] columnNames = {"CID", "CName", "Address", "Year"};
+
+        // Create a table model with the data and column names
+        model = new DefaultTableModel(data, columnNames);
+
+        // Create a JTable with the model
+        table = new JTable(model);
+
+        // Set table properties
+        table.setRowHeight(30);
+        table.setFont(new Font("Arial", Font.PLAIN, 14));
+        table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+
+        // Add table to scroll pane
+        JScrollPane scrollPane = new JScrollPane(table);
+
+        // Add scroll pane to frame
+        getContentPane().add(scrollPane);
+
+        setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new CollegeDetailsJTable());
+    }
+}
+
+
+Q2)
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+@WebServlet("/ChangeSessionTimeout")
+public class ChangeSessionTimeout extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Get the current session
+        HttpSession session = request.getSession();
+        
+        // Set the inactive time interval to 60 seconds (1 minute)
+        session.setMaxInactiveInterval(60); // time in seconds
+        
+        response.setContentType("text/html");
+        response.getWriter().println("Session timeout changed to 1 minute.");
+    }
+}

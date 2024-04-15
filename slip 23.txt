@@ -1,0 +1,72 @@
+Q1)
+import java.util.Scanner;
+
+public class VowelDisplay {
+    
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter a string: ");
+        String input = scanner.nextLine();
+        
+        Thread displayThread = new Thread(() -> {
+            for (char c : input.toCharArray()) {
+                if (isVowel(c)) {
+                    System.out.println(c);
+                    try {
+                        Thread.sleep(3000); // Sleep for 3 seconds
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        
+        displayThread.start();
+    }
+    
+    private static boolean isVowel(char c) {
+        c = Character.toLowerCase(c);
+        return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
+    }
+}
+
+Q2)
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
+public class StudentNames {
+
+    public static void main(String[] args) {
+        List<String> studentNames = new ArrayList<>();
+        
+        // Accepting 'N' student names from command line arguments
+        for (String arg : args) {
+            studentNames.add(arg);
+        }
+        
+        // Displaying student names using Iterator
+        System.out.println("Displaying student names using Iterator:");
+        displayUsingIterator(studentNames);
+        
+        // Displaying student names using ListIterator
+        System.out.println("\nDisplaying student names using ListIterator:");
+        displayUsingListIterator(studentNames);
+    }
+    
+    private static void displayUsingIterator(List<String> studentNames) {
+        Iterator<String> iterator = studentNames.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+    }
+    
+    private static void displayUsingListIterator(List<String> studentNames) {
+        ListIterator<String> listIterator = studentNames.listIterator();
+        while (listIterator.hasNext()) {
+            System.out.println(listIterator.next());
+        }
+    }
+}
+

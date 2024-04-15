@@ -1,0 +1,99 @@
+Q1)
+import java.util.Scanner;
+import java.util.TreeSet;
+
+public class SortedIntegers {
+    public static void main(String[] args) {
+        // Create a Scanner object to read input from the user
+        Scanner scanner = new Scanner(System.in);
+
+        // Create a TreeSet to store integers in sorted order without duplicates
+        TreeSet<Integer> sortedIntegers = new TreeSet<>();
+
+        // Accept the value of 'N' from the user
+        System.out.print("Enter the value of N: ");
+        int N = scanner.nextInt();
+
+        // Accept 'N' integers from the user
+        System.out.println("Enter " + N + " integers:");
+
+        for (int i = 0; i < N; i++) {
+            int num = scanner.nextInt();
+            sortedIntegers.add(num);
+        }
+
+        // Display the sorted integers without duplicates
+        System.out.println("Sorted integers without duplicates:");
+        for (int num : sortedIntegers) {
+            System.out.println(num);
+        }
+
+        // Close the Scanner object
+        scanner.close();
+    }
+}
+
+Q2)
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class NumberDisplay extends JFrame {
+    private JTextField textField;
+    private JButton startButton;
+    private Thread numberThread;
+
+    public NumberDisplay() {
+        setTitle("Number Display");
+        setSize(300, 100);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new FlowLayout());
+
+        textField = new JTextField(10);
+        startButton = new JButton("Start Display");
+
+        add(textField);
+        add(startButton);
+
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (numberThread == null || !numberThread.isAlive()) {
+                    numberThread = new Thread(new NumberRunnable());
+                    numberThread.start();
+                }
+            }
+        });
+    }
+
+    private class NumberRunnable implements Runnable {
+        @Override
+        public void run() {
+            for (int i = 1; i <= 100; i++) {
+                final int number = i;
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        textField.setText(String.valueOf(number));
+                    }
+                });
+                try {
+                    Thread.sleep(1000); // Sleep for 1 second
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                NumberDisplay numberDisplay = new NumberDisplay();
+                numberDisplay.setVisible(true);
+            }
+        });
+    }
+}

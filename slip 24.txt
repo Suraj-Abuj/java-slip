@@ -1,0 +1,67 @@
+Q1)
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class TextScrolling extends JPanel implements ActionListener {
+    private int xPos = 0;
+    private final String textToScroll = "Hello, World! This is a scrolling text.";
+    private final int scrollSpeed = 5; // Adjust the scrolling speed here
+
+    public TextScrolling() {
+        Timer timer = new Timer(50, this); // Timer to trigger the action event every 50 milliseconds
+        timer.start();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        // Draw the scrolling text
+        g.drawString(textToScroll, xPos, getHeight() / 2);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // Update the x position of the text for scrolling effect
+        xPos -= scrollSpeed;
+        // If the text moves out of the panel, reset the x position to start again
+        if (xPos < -getFontMetrics(getFont()).stringWidth(textToScroll)) {
+            xPos = getWidth();
+        }
+        repaint(); // Repaint the panel to show the updated text position
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Text Scrolling");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 100);
+        frame.getContentPane().add(new TextScrolling());
+        frame.setVisible(true);
+    }
+}
+
+
+Q2)
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+</head>
+<body>
+    <%
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        
+        // Check if username and password are the same
+        if (username != null && password != null && username.equals(password)) {
+            response.sendRedirect("Login.html"); // Forward to Login.html if login is successful
+        } else {
+            response.sendRedirect("Error.html"); // Forward to Error.html if login fails
+        }
+    %>
+</body>
+</html>

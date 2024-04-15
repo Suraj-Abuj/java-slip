@@ -1,0 +1,69 @@
+Q1)
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class DisplayColumnInformation {
+    // JDBC URL, username, and password of your database
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/your_database_name";
+    private static final String USERNAME = "your_username";
+    private static final String PASSWORD = "your_password";
+
+    public static void main(String[] args) {
+        try (Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD)) {
+            // Create a statement
+            Statement statement = connection.createStatement();
+            
+            // Execute the query to retrieve metadata
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM DONAR");
+            
+            // Get the metadata
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            
+            // Display column information
+            int columnCount = metaData.getColumnCount();
+            System.out.println("Column Information:");
+            for (int i = 1; i <= columnCount; i++) {
+                System.out.println("Column Name: " + metaData.getColumnName(i));
+                System.out.println("Column Type: " + metaData.getColumnTypeName(i));
+                System.out.println("Column Size: " + metaData.getColumnDisplaySize(i));
+                System.out.println("Is Nullable: " + (metaData.isNullable(i) == ResultSetMetaData.columnNullable ? "Yes" : "No"));
+                System.out.println();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+Q2)
+import java.util.LinkedList;
+
+public class LinkedListOperations {
+    public static void main(String[] args) {
+        // Create a LinkedList of integers
+        LinkedList<Integer> linkedList = new LinkedList<>();
+
+        // Add elements at the first position
+        linkedList.addFirst(3);
+        linkedList.addFirst(2);
+        linkedList.addFirst(1);
+
+        // Print the LinkedList
+        System.out.println("LinkedList after adding elements at first position: " + linkedList);
+
+        // Delete the last element
+        if (!linkedList.isEmpty()) {
+            linkedList.removeLast();
+            System.out.println("LinkedList after deleting last element: " + linkedList);
+        } else {
+            System.out.println("LinkedList is empty. Cannot delete last element.");
+        }
+
+        // Display the size of the LinkedList
+        System.out.println("Size of the LinkedList: " + linkedList.size());
+    }
+}
